@@ -43,8 +43,4 @@
 
 ## Página do Administrador
 ![System](/ProjetoPI/images/admin_area.png)
-<<<<<<< HEAD
 ![System](/ProjetoPI/images/admin%20edit.png)
-=======
-![System](/ProjetoPI/images/admin%20edit.png)
->>>>>>> e8390d0e7d429f778b490450a06abe8185f3b705
