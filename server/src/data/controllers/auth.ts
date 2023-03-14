@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
+import { v4 as uuid } from 'uuid'
+
 import User from "../models/User";
 
 export const signIn = async (req: Request, res: Response) => {
+  console.log('====================================');
+  console.log(req.query);
+  console.log(req.params.cpf);
+  console.log('====================================');
   const type = req.query.type;
   const cpf = req.params.cpf;
   const user = await User.findOne({ cpf, type });
@@ -16,20 +22,16 @@ export const signUp = async (req: Request, res: Response) => {
   const type = req.query.type;
   const cpf = req.params.cpf;
   const user = req.body;
+  const id = uuid();
   const newUser = new User({
     ...user,
     type,
     cpf,
+    id,
   })
-  console.log('====================================');
-  console.log(newUser);
-  console.log('====================================');
   try {
-    await newUser.save();
+    await User.create(newUser);
     res.status(201).json({ message: "User created", user: newUser });
   } catch(err) {
-    console.log('====================================');
-    console.log(err);
-    console.log('====================================');
   }
 };

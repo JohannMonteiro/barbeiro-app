@@ -11,10 +11,11 @@ type UserModel = {
 
 const userSchema = new mongoose.Schema(
   {
+    id: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     cpf: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
-    type: { type: String, required: true,  enum: ['barber', 'client'], },
+    type: { type: String, required: true,  enum: ['barber', 'client'] },
   },
   {
     timestamps: true,

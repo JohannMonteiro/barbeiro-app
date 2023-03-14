@@ -1,11 +1,13 @@
-import express from 'express'
+import express from "express";
+import cors from "cors";
 
-import { apiRoutes } from './routes'
+import { apiRoutes } from "./routes";
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 
-apiRoutes(app)
+apiRoutes(app);
 
-export { app }
+export { app };
