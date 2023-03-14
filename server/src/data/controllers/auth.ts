@@ -4,17 +4,17 @@ import { v4 as uuid } from 'uuid'
 import User from "../models/User";
 
 export const signIn = async (req: Request, res: Response) => {
-  console.log('====================================');
-  console.log(req.query);
-  console.log(req.params.cpf);
-  console.log('====================================');
   const type = req.query.type;
   const cpf = req.params.cpf;
-  const user = await User.findOne({ cpf, type });
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findOne({ cpf, type });
+    if (user){
+      return res.status(200).json(user);
+    }
+    return res.status(404).json({ message: "User not found" });
+  } catch(err){
+    console.log(err)
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

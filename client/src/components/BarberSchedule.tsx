@@ -4,41 +4,39 @@ import { globalColors } from "../styles/global-theme";
 
 interface Props {
   containerStyles?: StyleProp<ViewStyle>;
-  name?: string;
-  service?: string;
-  hoursIds?: number[];
-  isEmpty?: boolean;
+  name: string;
+  service: string;
+  hoursIds: number[];
+  phone: string;
 }
 
-export const ClientSchedule: React.FC<Props> = ({
+export const BarberSchedule: React.FC<Props> = ({
   name,
   service,
   hoursIds,
   containerStyles,
-  isEmpty = false,
+  phone,
 }) => {
-  let hourText: string = '';
-  if (hoursIds?.length) {
-    hourText = HOURS.filter((hour) => hour.id === hoursIds[0])[0].hour;
-    hourText = hourText.split(' - ')[0]
-  }
-  const text = service === 'hair' ? 'cabelo' : service === 'beard' ? 'barba' : 'cabelo e barba';
+  let hourText: string = HOURS.filter((hour) => hour.id === hoursIds[0])[0]
+    .hour;
+  hourText = hourText.split(" - ")[0];
+
+  const text =
+    service === "hair"
+      ? "cabelo"
+      : service === "beard"
+      ? "barba"
+      : "cabelo e barba";
   return (
     <View style={[styles.container, containerStyles]}>
-      {!isEmpty ? (
-        <>
-          <View style={styles.wrapper}>
-            <Text style={[styles.name]}>{name}</Text>
-            <Text style={[styles.hour]}>{`${hourText}`}</Text>
-          </View>
-          <Text style={[styles.service]}>{text}</Text>
-        </>
-      ) : (
-        <>
-          <Text style={[styles.service, { textAlign: 'center', fontFamily: "Inter-Bold" }]}>Sem agendamentos com o barbeiro {name}</Text>
-          <Text style={[styles.service, { textAlign: 'center' }]}>Escolha um horário</Text>
-        </>
-      )}
+      <View style={styles.wrapper}>
+        <Text style={[styles.name]}>{name}</Text>
+        <Text style={[styles.hour]}>{`${hourText}`}</Text>
+      </View>
+      <View style={styles.wrapper}>
+        <Text style={[styles.service]}>{text}</Text>
+        <Text style={[styles.service]}>{phone}</Text>
+      </View>
     </View>
   );
 };

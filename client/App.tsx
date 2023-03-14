@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { MyStack } from "./src/routes";
 import { StatusBar } from "expo-status-bar";
+import { Provider } from "./src/context";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -27,7 +28,9 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <StatusBar style="light" backgroundColor="transparent" translucent />
       <NavigationContainer>
+        <Provider >
           <MyStack />
+        </Provider>
       </NavigationContainer>
     </View>
   );

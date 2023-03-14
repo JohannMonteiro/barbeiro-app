@@ -1,55 +1,18 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useContextSelector } from "use-context-selector";
 import { ClientItem } from "../components/ClientItem";
 import { ClientSchedule } from "../components/ClientSchedule";
+import { Context } from "../context";
 import { globalColors } from "../styles/global-theme";
 
 interface Props {
   navigation: any;
 }
 
-const options = {
-  month: "long",
-  day: "numeric",
-};
-const date = new Date().toLocaleDateString("pt-BR", options as any);
-
-const list = [
-  {
-    id: "1",
-    name: "Jarbas da Gillette",
-  },
-  {
-    id: "2",
-    name: "Pedrinho Hipster",
-  },
-  {
-    id: "3",
-    name: "Jão Sputnik",
-  },
-  {
-    id: "4",
-    name: "Paulão Tesoura Mágica",
-  },
-  {
-    id: "5",
-    name: "Manolo Navalha",
-  },
-  {
-    id: "6",
-    name: "Gregório Barba",
-  },
-  {
-    id: "7",
-    name: "Tonho Cara de Bebê",
-  },
-  {
-    id: "8",
-    name: "Marco",
-  }
-];
-
 export const ClientHomeScreen: React.FC<Props> = ({ navigation }) => {
+  const {barbers, selectBarber} = useContextSelector(Context, (context) => context);
+  
   const handleNavigation = () => {
     navigation.navigate("barberAgenda");
   }
@@ -60,14 +23,14 @@ export const ClientHomeScreen: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.title}>Barbeiros</Text>
         <FlatList
           style={{ maxHeight: 450 }}
-          data={list}
+          data={barbers}
           keyExtractor={({ id }) => id}
-          renderItem={({ item: { id, name } }) => (
+          renderItem={({ item }) => (
             <ClientItem
-              key={id}
-              name={name}
+              key={item.id}
+              name={item.name}
               containerStyles={{ marginBottom: 12 }}
-              onPress={handleNavigation}
+              onPress={() => selectBarber(item, handleNavigation)}
             />
           )}
           showsVerticalScrollIndicator={false}

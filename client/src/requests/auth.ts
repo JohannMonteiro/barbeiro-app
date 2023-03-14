@@ -1,4 +1,4 @@
-import api from "./axios";
+import api, { ApiResponse } from "./axios";
 
 type UserType = "barber" | "client";
 
@@ -15,24 +15,30 @@ export type User = {
   phone: string;
 };
 
-export const welcomeApi = async () => {
-  const { data } = await api.get("api");
-  return data;
-};
-
-export const signIn = async ({ cpf, type }: SignInPayload): Promise<User> => {
-  console.log(type);
-
-  const {data} = await api.post(
-    `sign-in/${cpf}`,
-    {},
-    {
-      params: {
-        type,
-      },
-    }
-  );
-  return data as any;
+export const signIn = async ({
+  cpf,
+  type,
+}: SignInPayload): Promise<ApiResponse> => {
+  try {
+    const { data } = await api.post(
+      `sign-in/${cpf}`,
+      {},
+      {
+        params: {
+          type,
+        },
+      }
+    );
+    return {
+      data,
+      status: 200,
+    };
+  } catch (err: any) {
+    return {
+      data: err.response.data as any,
+      status: err.response.status as number,
+    };
+  }
 };
 
 export type SignUpPayload = {
@@ -44,16 +50,31 @@ export type SignUpPayload = {
 
 export const signUp = async ({
   cpf,
+  type,
   name,
   phone,
-  type,
-}: SignUpPayload): Promise<User> =>
-  await api.post(`/sign-up/${cpf}`, {
-    query: {
-      type,
-    },
-    body: {
-      name,
-      phone,
-    },
-  });
+}: SignUpPayload): Promise<ApiResponse> => {
+  try {
+    const { data } = await api.post(
+      `sign-up/${cpf}`,
+      {
+        name,
+        phone,
+      },
+      {
+        params: {
+          type,
+        },
+      }
+    );
+    return {
+      data,
+      status: 200,
+    };
+  } catch (err: any) {
+    return {
+      data: err.response.data as any,
+      status: err.response.status as number,
+    };
+  }
+};

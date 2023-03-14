@@ -1,6 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useContextSelector } from "use-context-selector";
+import { BarberSchedule } from "../components/BarberSchedule";
 import { ClientSchedule } from "../components/ClientSchedule";
+import { Context } from "../context";
 import { globalColors } from "../styles/global-theme";
 
 interface Props {
@@ -13,72 +16,25 @@ const options = {
 };
 const date = new Date().toLocaleDateString("pt-BR", options as any);
 
-const list = [
-  {
-    id: "1",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "2",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "3",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "4",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "5",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "6",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "7",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  },
-  {
-    id: "8",
-    name: "Amaury Junior",
-    service: "Corte de cabelo",
-    hour: "13:00",
-  }
-];
-
 export const BarberHomeScreen: React.FC<Props> = ({ navigation }) => {
+  const {
+    barberServices,
+  } = useContextSelector(Context, (context) => context);
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.title}>{date}</Text>
         <FlatList
           style={{ maxHeight: 450 }}
-          data={list}
+          data={barberServices}
           keyExtractor={({ id }) => id}
-          renderItem={({ item: { id, name, hour, service } }) => (
-            <ClientSchedule
+          renderItem={({ item: { id, hoursIds, type, clientName, clientPhone } }) => (
+            <BarberSchedule
               key={id}
-              name={name}
-              service={service}
-              hour={hour}
+              name={clientName}
+              service={type}
+              hoursIds={hoursIds}
+              phone={clientPhone}
               containerStyles={{ marginBottom: 12 }}
             />
           )}

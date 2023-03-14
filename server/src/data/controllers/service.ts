@@ -9,6 +9,9 @@ export const createService = async (req: Request, res: Response) => {
     ...req.body,
     id,
   };
+  console.log('====================================');
+  console.log(newService);
+  console.log('====================================');
   try {
     const service = await Service.create(newService);
     res.status(201).json(service);
@@ -19,7 +22,14 @@ export const createService = async (req: Request, res: Response) => {
   }
 };
 
-export const getServiceByQueryParams = async (req: Request, res: Response) => {
-  const service = await Service.findOne(req.query);
-  res.status(200).json(service);
+export const getClientScheduledServices = async (req: Request, res: Response) => {
+  const { clientId } = req.params;
+  const services = await Service.find({ clientId });
+  res.status(200).json(services);
+};
+
+export const getBarberScheduledServices = async (req: Request, res: Response) => {
+  const { barberId } = req.params;
+  const services = await Service.find({ barberId });
+  res.status(200).json(services);
 };

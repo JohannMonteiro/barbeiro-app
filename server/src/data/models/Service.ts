@@ -19,6 +19,8 @@ const serviceSchema = new mongoose.Schema(
       enum: ["hair", "beard", "hairAndBeard"],
     },
     date: { type: String, required: true },
+    clientName: { type: String, required: true },
+    clientPhone: { type: String, required: true },
     hoursIds: { type: [Number], required: true },
     barberId: {
       type: String,
