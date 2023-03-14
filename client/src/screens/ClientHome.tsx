@@ -33,19 +33,19 @@ const list = [
   },
   {
     id: "5",
-    name: "Amaury Junior",
+    name: "Manolo Navalha",
   },
   {
     id: "6",
-    name: "Amaury Junior",
+    name: "Gregório Barba",
   },
   {
     id: "7",
-    name: "Amaury Junior",
+    name: "Tonho Cara de Bebê",
   },
   {
     id: "8",
-    name: "Amaury Junior",
+    name: "Marco",
   }
 ];
 
