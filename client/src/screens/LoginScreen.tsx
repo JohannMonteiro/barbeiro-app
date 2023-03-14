@@ -7,22 +7,23 @@ import { InputText } from "../components/Input";
 import ScrollToBottom from "../components/ScrollToBottom";
 import { globalColors } from "../styles/global-theme";
 import { PageType } from "../types";
+import { signIn, welcomeApi } from "../requests";
 
 interface Props {
   navigation: any;
 }
 
 export const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [login, setLogin] = useState("");
-  const [type, setType] = useState<PageType>("cliente");
+  const [cpf, setCpf] = useState("");
+  const [type, setType] = useState<PageType>("client");
   const togglePageType = (type: PageType) => setType(type);
 
   const onChangeValue = (text: string) => {
-    setLogin(text);
+    setCpf(text);
   };
 
   const handleLoginNavigation = () => {
-    if (type === "cliente") {
+    if (type === "client") {
       navigation.navigate("clientHome");
     } else {
       navigation.navigate("barberHome");
@@ -33,6 +34,19 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     navigation.navigate("register");
   };
 
+  const handleLogin = async () => {
+    try {
+      const data = await signIn({
+        cpf,
+        type,
+      })
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollToBottom containerStyles={styles.scrollToBottomStyles}>
@@ -40,14 +54,14 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <Image source={Logo} style={styles.logo} />
           <View style={styles.checkBoxWrapper}>
             <LoginCheckBox
-              isActive={type === "cliente"}
-              text="cliente"
+              isActive={type === "client"}
+              text="client"
               toggleIsActive={togglePageType}
               containerStyles={{ marginRight: 24 }}
             />
             <LoginCheckBox
-              isActive={type === "barbeiro"}
-              text="barbeiro"
+              isActive={type === "barber"}
+              text="barber"
               toggleIsActive={togglePageType}
             />
           </View>
@@ -55,11 +69,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
             <InputText
               placeholder="Insira seu CPF"
               onChangeValue={onChangeValue}
-              value={login}
+              value={cpf}
             />
             <Button
               text={"LOGIN"}
-              onPress={handleLoginNavigation}
+              onPress={handleLogin}
               containerStyles={{ marginTop: 18 }}
             />
             <Text onPress={handleNavigateToRegister} style={styles.label}>

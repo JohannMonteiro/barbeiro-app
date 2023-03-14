@@ -4,6 +4,10 @@ import { v4 as uuid } from 'uuid'
 import User from "../models/User";
 
 export const signIn = async (req: Request, res: Response) => {
+  console.log('====================================');
+  console.log(req.query);
+  console.log(req.params.cpf);
+  console.log('====================================');
   const type = req.query.type;
   const cpf = req.params.cpf;
   const user = await User.findOne({ cpf, type });

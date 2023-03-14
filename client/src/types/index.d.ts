@@ -1,4 +1,4 @@
-export type PageType = "barbeiro" | "cliente";
+export type PageType = "barber" | "client";
 
-export type ServiceType = "cabelo" | "barba" | "cabelo-e-barba";
+export type ServiceType = "hair" | "beard" | "hairAndBeard";
 
