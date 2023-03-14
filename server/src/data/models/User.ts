@@ -12,7 +12,7 @@ type UserModel = {
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    cpf: { type: String, required: true },
+    cpf: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
     type: { type: String, required: true,  enum: ['barber', 'client'], },
   },
