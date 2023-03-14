@@ -12,7 +12,7 @@ export const getAllClients = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (req: Request, res: Response) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById({ id: req.params.id});
   res.status(200).json(user);
 };
 

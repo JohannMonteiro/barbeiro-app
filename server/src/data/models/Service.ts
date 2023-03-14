@@ -10,8 +10,9 @@ type ServiceModel = {
   clientId: string;
 };
 
-const userSchema = new mongoose.Schema(
+const serviceSchema = new mongoose.Schema(
   {
+    id: { type: String, required: true, unique: true },
     type: {
       type: String,
       required: true,
@@ -20,12 +21,12 @@ const userSchema = new mongoose.Schema(
     date: { type: String, required: true },
     hoursIds: { type: [Number], required: true },
     barberId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "User",
       required: true,
     },
     clientId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "User",
       required: true,
     },
@@ -35,6 +36,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const Service = mongoose.model<ServiceModel>("Service", userSchema);
+const Service = mongoose.model<ServiceModel>("Service", serviceSchema);
 
 export default Service;

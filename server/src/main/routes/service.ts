@@ -1,10 +1,10 @@
-import { signIn, signUp } from "@/data/controllers";
+import { createService, getServiceByQueryParams } from "@/data/controllers";
 import { Router } from "express";
 
 const serviceRoutes = async (router: Router) => {
-  router.post("/services", signIn);
+  router.post("/services", createService);
 
-  router.get("/services", signUp);
+  router.get("/services", getServiceByQueryParams);
 };
 
 export default serviceRoutes;
