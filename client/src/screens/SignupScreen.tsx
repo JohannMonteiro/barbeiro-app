@@ -8,6 +8,8 @@ import ScrollToBottom from "../components/ScrollToBottom";
 import { globalColors } from "../styles/global-theme";
 import { PageType } from "../types";
 import axios from "axios";
+import { useContextSelector } from "use-context-selector";
+import { Context } from "../context";
 
 interface Props {
   navigation: any;
@@ -27,6 +29,8 @@ type ValueChange = {
 };
 
 export const SignUpScreen: React.FC<Props> = ({ navigation }) => {
+  const register = useContextSelector(Context, ({ register }) => register);
+
   const [data, setData] = useState<Data>({
     name: "",
     lastName: "",
@@ -47,26 +51,23 @@ export const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const handleLSignUp = async () => {
-    try {
-      // const response = await axios.post(`http://127.0.0.1:3333/sign-in/${cpf}`, {
-      //   type,
-      // })
-      // const response = await signIn({
-      //   cpf,
-      //   type,
-      // })
-      console.log('====================================');
-      // console.log(response);
-      console.log('====================================');
-      // const { token } = response.data;
-      // await AsyncStorage.setItem("token", token);
-      // navigation.navigate("clientHome");
-    } catch (error) {
-      console.log('====================================');
-      console.log(error);
+  const handleRegisterNavigation = () => {
+    if (type === "client") {
+      navigation.navigate("clientHome");
+    } else {
+      navigation.navigate("barberHome");
     }
-  }
+  };
+
+  const handleLSignUp = async () => {
+    const { cpf, lastName, name, phone } = data;
+    const formattedCpf = cpf.replace(/\D/g, "");
+    const userName = `${name} ${lastName}`;
+    await register(
+      { cpf: formattedCpf, type, name: userName, phone },
+      handleRegisterNavigation
+    );
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -117,8 +118,9 @@ export const SignUpScreen: React.FC<Props> = ({ navigation }) => {
             />
             <Button
               text={"CADASTRAR"}
-              onPress={() => {}}
+              onPress={handleLSignUp}
               containerStyles={{ marginTop: 18 }}
+              disabled={data.cpf.length !== 14}
             />
             <Text onPress={handleNavigateToLogin} style={styles.label}>
               LOGIN

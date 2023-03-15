@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useContextSelector } from "use-context-selector";
 import { Button } from "../components/Button";
 import ScrollToBottom from "../components/ScrollToBottom";
 import { ServiceCheckBox } from "../components/ServiceCheckbox";
+import { Context } from "../context";
 import { globalColors } from "../styles/global-theme";
 import { ServiceType } from "../types";
 
@@ -11,25 +13,26 @@ interface Props {
 }
 
 export const ServiceTypeScreen: React.FC<Props> = ({ navigation }) => {
-  const [login, setLogin] = useState("");
-  const [type, setType] = useState<ServiceType>("cabelo");
+  const { selectedHour, createNewService, selectedBarber, currentUser } = useContextSelector(
+    Context,
+    (context) => context
+  );
+  
+  const [type, setType] = useState<ServiceType>("hair");
   const toggleServiceType = (type: ServiceType) => setType(type);
 
-  const onChangeValue = (text: string) => {
-    setLogin(text);
-  };
-
-  const handleLoginNavigation = () => {
-    // if (type === "cliente") {
-    //   navigation.navigate("clientHome");
-    // } else {
-    //   navigation.navigate("barberHome");
-    // }
-  };
-
-  const handleNavigateToRegister = () => {
-    navigation.navigate("register");
-  };
+  const createService = async () => {
+    const hoursIds = type === 'hairAndBeard' ? [selectedHour!.id, selectedHour!.id + 1] : [selectedHour!.id];
+    await createNewService({
+      type,
+      barberId: selectedBarber!.id,
+      clientId: currentUser!.id,
+      date: selectedHour!.date,
+      hoursIds,
+      clientName: currentUser!.name,
+      clientPhone: currentUser!.phone,
+    }, () => navigation.navigate('clientHome'));
+  }
 
   return (
     <View style={styles.container}>
@@ -37,27 +40,27 @@ export const ServiceTypeScreen: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.title}>Qual Serviço você Precisa?</Text>
         <View style={styles.checkBoxWrapper}>
           <ServiceCheckBox
-            isActive={type === "cabelo"}
-            text="cabelo"
+            isActive={type === "hair"}
+            text="hair"
             toggleIsActive={toggleServiceType}
             containerStyles={{ marginRight: 24, marginBottom: 16 }}
           />
           <ServiceCheckBox
-            isActive={type === "barba"}
-            text="barba"
+            isActive={type === "beard"}
+            text="beard"
             toggleIsActive={toggleServiceType}
             containerStyles={{ marginRight: 24, marginBottom: 16 }}
           />
           <ServiceCheckBox
-            isActive={type === "cabelo-e-barba"}
-            text="cabelo-e-barba"
+            isActive={type === "hairAndBeard"}
+            text="hairAndBeard"
             toggleIsActive={toggleServiceType}
           />
         </View>
       </View>
       <Button
         text={"CONFIRMAR"}
-        onPress={handleLoginNavigation}
+        onPress={createService}
         containerStyles={{ marginHorizontal: 16, marginBottom: 16 }}
       />
     </View>

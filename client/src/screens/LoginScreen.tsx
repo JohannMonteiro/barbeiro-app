@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useContextSelector } from "use-context-selector";
 import Logo from "../../assets/images/logo.png";
 import { Button } from "../components/Button";
+import { CPFInputText } from "../components/CPFInput";
 import { LoginCheckBox } from "../components/LoginCheckbox";
-import { InputText } from "../components/Input";
 import ScrollToBottom from "../components/ScrollToBottom";
+import { Context } from "../context";
 import { globalColors } from "../styles/global-theme";
 import { PageType } from "../types";
-import { signIn, welcomeApi } from "../requests";
 
 interface Props {
   navigation: any;
 }
 
 export const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  const login = useContextSelector(Context, ({ login }) => login);
+
   const [cpf, setCpf] = useState("");
   const [type, setType] = useState<PageType>("client");
   const togglePageType = (type: PageType) => setType(type);
@@ -35,17 +38,9 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleLogin = async () => {
-    try {
-      const data = await signIn({
-        cpf,
-        type,
-      })
-    } catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
-    }
-  }
+    const formattedCpf = cpf.replace(/\D/g, "");
+    await login({ cpf: formattedCpf, type }, handleLoginNavigation);
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,15 +61,17 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
             />
           </View>
           <View style={styles.bottomWrapper}>
-            <InputText
+            <CPFInputText
               placeholder="Insira seu CPF"
               onChangeValue={onChangeValue}
               value={cpf}
+              containerStyles={{ marginBottom: 12 }}
             />
             <Button
               text={"LOGIN"}
               onPress={handleLogin}
               containerStyles={{ marginTop: 18 }}
+              disabled={cpf.length !== 14}
             />
             <Text onPress={handleNavigateToRegister} style={styles.label}>
               CADASTRE-SE

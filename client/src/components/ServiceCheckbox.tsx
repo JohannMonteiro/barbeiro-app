@@ -17,19 +17,22 @@ export const ServiceCheckBox: React.FC<Props> = ({
   text,
   toggleIsActive,
   containerStyles,
-}) => (
-  <View style={[styles.wrapper, containerStyles]}>
-    <Checkbox
-      style={[styles.checkbox]}
-      value={isActive}
-      onValueChange={() => toggleIsActive(text)}
-      color={
-        isActive ? globalColors["golden-dark"] : globalColors["golden-light"]
-      }
-    />
-    <Text style={[styles.text]}>{capitalize(text)}</Text>
-  </View>
-);
+}) => {
+  const service = text === 'hair' ? 'cabelo' : text === 'beard' ? 'barba' : 'cabelo e barba';
+  return (
+    <View style={[styles.wrapper, containerStyles]}>
+      <Checkbox
+        style={[styles.checkbox]}
+        value={isActive}
+        onValueChange={() => toggleIsActive(text)}
+        color={
+          isActive ? globalColors["golden-dark"] : globalColors["golden-light"]
+        }
+      />
+      <Text style={[styles.text]}>{capitalize(service)}</Text>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   wrapper: {

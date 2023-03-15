@@ -12,11 +12,12 @@ type Props = {
   containerStyles?: StyleProp<ViewStyle>;
   text: string;
   onPress: () => void;
+  disabled?: boolean;
 };
 
-export const Button: React.FC<Props> = ({ containerStyles, onPress, text }) => (
-  <TouchableOpacity onPress={onPress}>
-    <View style={[styles.button, containerStyles]}>
+export const Button: React.FC<Props> = ({ containerStyles, onPress, text, disabled }) => (
+  <TouchableOpacity onPress={onPress} disabled={disabled}>
+    <View style={[styles.button, containerStyles, disabled ? styles.disabled : styles.enabled]}>
         <Text style={[styles.text]}>{text}</Text>
     </View>
   </TouchableOpacity>
@@ -24,10 +25,15 @@ export const Button: React.FC<Props> = ({ containerStyles, onPress, text }) => (
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: globalColors["golden-dark"],
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: "center",
+  },
+  enabled: {
+    backgroundColor: globalColors["golden-dark"],
+  },
+  disabled: {
+    backgroundColor: globalColors["gray-dark"],
   },
   text: {
     fontSize: 18,
