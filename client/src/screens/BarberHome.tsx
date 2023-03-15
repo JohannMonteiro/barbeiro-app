@@ -17,9 +17,7 @@ const options = {
 const date = new Date().toLocaleDateString("pt-BR", options as any);
 
 export const BarberHomeScreen: React.FC<Props> = ({ navigation }) => {
-  const {
-    barberServices,
-  } = useContextSelector(Context, (context) => context);
+  const { barberServices } = useContextSelector(Context, (context) => context);
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -28,7 +26,9 @@ export const BarberHomeScreen: React.FC<Props> = ({ navigation }) => {
           style={{ maxHeight: 450 }}
           data={barberServices}
           keyExtractor={({ id }) => id}
-          renderItem={({ item: { id, hoursIds, type, clientName, clientPhone } }) => (
+          renderItem={({
+            item: { id, hoursIds, type, clientName, clientPhone },
+          }) => (
             <BarberSchedule
               key={id}
               name={clientName}
@@ -39,7 +39,12 @@ export const BarberHomeScreen: React.FC<Props> = ({ navigation }) => {
             />
           )}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={() => <></>}
+          ListEmptyComponent={() => (
+            <BarberSchedule
+              isEmpty={true}
+              containerStyles={{ marginBottom: 12 }}
+            />
+          )}
         />
       </View>
     </View>
